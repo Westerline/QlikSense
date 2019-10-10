@@ -1,0 +1,30 @@
+/*
+Benefit of using Pre-LOAD statements:
+○ Separate loads that are a good way to un-nest different functions
+○ Can perform multiple transforms on the same original field
+○ Data staging method, easy to unpick
+*/
+
+/*
+ApplyMap Function:
+1. Name of Mapping
+2. Mapping key field Name
+3. String to return if no result is found
+*/
+LOAD
+  *,
+  ApplyMap('Map_ShipperID_to_CompanyName', ShipperID, null()) as Country
+  From Orders;
+
+LOAD
+    Discount,
+    LineNo as OrderDetails_LineNo,
+    OrderID,
+    ProductID,
+    Quantity,
+    UnitPrice
+
+// Since we're working with a QVD, there isn't a SELECT statement, but we can still use keywords such as FROM and WHERE. //
+FROM [lib://Training Extract Wesley/OrderDetails.qvd]
+(qvd)
+WHERE EXISTS (OrderID);

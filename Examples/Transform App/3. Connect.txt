@@ -1,0 +1,2 @@
+// This time, we're connecting directly to our QVD files we created in the Extract app. //
+LIB CONNECT TO 'Training - ABC';

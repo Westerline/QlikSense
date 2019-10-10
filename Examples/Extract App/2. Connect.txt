@@ -1,0 +1,3 @@
+// Created when adding a data source through Qlik Sense GUI
+
+LIB CONNECT TO 'Training - ABC - Wesley';

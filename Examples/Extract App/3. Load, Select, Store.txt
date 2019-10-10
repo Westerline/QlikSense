@@ -1,0 +1,25 @@
+// Start by renaming the table. //
+[Categories]:
+
+/*
+Benefit of renaming fields in the LOAD statement vs in the SELECT statement:
+○ Provide some unique functions not available in SQL code
+○ Easier to trace stages of development
+*/
+LOAD CategoryID,
+    CategoryName,
+    Description;
+
+// This section can contain and will pass along normal SQL code. //
+SQL SELECT CategoryID,
+    CategoryName,
+    Description
+FROM categories;
+
+/*
+Next, we want to store the data from the data source into a QVD. This has a number of benefits:
+○ Frees up the data source by working from a local copy of the data instead.
+○ Improved performance of data modeling when working with QVD files.
+○ Data staging method, easy to unpick
+*/
+Store Categories into [lib://Training Extract Wesley/Categories.qvd](qvd);

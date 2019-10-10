@@ -1,0 +1,22 @@
+/*
+○ If you need one value from another table, use Mapping. If you need two or more values, use a Join.
+○ Takes one value as input, checks if the value exists in a mapping table, and returns the corresponding value from the second column in the mapping table.
+○ Has two fields, order is important: (1) Key field (2) Attribute/Value field
+○ Mapping section should preceed your other load sections and statements.
+○ Mapping tables drop implicitly which is good for keeping your data model clean
+○ For a detailed write-up, check out: https://community.qlik.com/t5/Qlik-Design-Blog/Don-t-join-use-Applymap-instead/ba-p/1467592
+*/
+
+Map_ShipperID_to_CompanyName:
+MAPPING LOAD
+	ShipperID,
+    CompanyName
+FROM [lib://Training Extract Wesley/Shippers.qvd]
+(qvd);
+
+Divisions_Map:
+MAPPING LOAD
+    DivisionID,
+    DivisionName
+FROM [lib://Training Extract Wesley/Divisions.qvd]
+(qvd);

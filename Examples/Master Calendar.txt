@@ -1,0 +1,71 @@
+// Credit to: Josh_Good (https://community.qlik.com/t5/user/viewprofilepage/user-id/35428) //
+
+QuartersMap:
+
+MAPPING LOAD
+
+rowno() as Month,
+
+'Q' & Ceil (rowno()/3) as Quarter
+
+AUTOGENERATE (12);
+
+Temp:
+
+Load
+
+               min(OrderDate) as minDate,
+
+               max(OrderDate) as maxDate
+
+Resident Orders;
+
+Let varMinDate = Num(Peek('minDate', 0, 'Temp'));
+
+Let varMaxDate = Num(Peek('maxDate', 0, 'Temp'));
+
+DROP Table Temp;
+
+TempCalendar:
+
+LOAD
+
+               $(varMinDate) + Iterno()-1 As Num,
+
+               Date($(varMinDate) + IterNo() - 1) as TempDate
+
+               AutoGenerate 1 While $(varMinDate) + IterNo() -1 <= $(varMaxDate);
+
+MasterCalendar:
+
+Load
+
+               TempDate AS OrderDate,
+
+               week(TempDate) As Week,
+
+               Year(TempDate) As Year,
+
+               Month(TempDate) As Month,
+
+               Day(TempDate) As Day,
+
+               YeartoDate(TempDate)*-1 as CurYTDFlag,
+
+               YeartoDate(TempDate,-1)*-1 as LastYTDFlag,
+
+               inyear(TempDate, Monthstart($(varMaxDate)),-1) as RC12,
+
+               date(monthstart(TempDate), 'MMM-YYYY') as MonthYear,
+
+               ApplyMap('QuartersMap', month(TempDate), Null()) as Quarter,
+
+               Week(weekstart(TempDate)) & '-' & WeekYear(TempDate) as WeekYear,
+
+               WeekDay(TempDate) as WeekDay
+
+Resident TempCalendar
+
+Order By TempDate ASC;
+
+Drop Table TempCalendar;

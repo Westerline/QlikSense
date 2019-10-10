@@ -1,0 +1,15 @@
+/*
+Once we've stored the data in a QVD, we need to drop the tables so that we're not working directly with the data source.
+In the Transform layer, we will load the QVDs again. Once the extract is complete, we should be left with no loaded data,
+just the un-loaded QVD files.
+*/
+
+Drop Table
+[Categories],
+[Customers],
+Divisions,
+[Order Details],
+[Orders],
+[Products],
+[Shipments],
+[Shippers];
